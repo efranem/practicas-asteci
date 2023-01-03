@@ -1,0 +1,101 @@
+swagger: "2.0"
+info:
+  description: "Servicio de consulta de llamdas telefonicas"
+  version: "1.0.0"
+  title: "ConsultaLlamadasService"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "efranem@outlook.com"
+    name: "Efrain Hernandez"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost"
+basePath: "/empresa/dominio"
+schemes:
+- "http"
+paths:
+  /consulta:
+    get:
+      tags:
+        - ConsultaLlamadasService
+      summary: "Operacion de consulta de llamadas telefonicas"
+      description: "Operacion de consulta de llamadas telefonicas"
+      operationId: "consulta"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: '#/parameters/Telefono'
+      responses:
+        '200':
+          description: "Success."
+          schema:
+            $ref: '#/definitions/ConsultaRespType'
+
+        '400':
+          description: "Bad request."
+          schema:
+            $ref: '#/definitions/RespuestaNoExitosa'
+
+        '401':
+          description: "Authorization information is missing or invalid."
+          schema:
+            $ref: '#/definitions/RespuestaNoExitosa'
+
+        '500':
+          description: "Unexpected error."
+definitions:
+  ConsultaRespType:
+    type: "object"
+    properties:
+      consultaResponse:
+        $ref: "#/definitions/CosultaType"
+  CosultaType:
+    type: "object"
+    properties:
+      llamadas:
+        type: array
+        items:
+          $ref: "#/definitions/LlalmadaType"
+  LlalmadaType:
+    type: "object"
+    properties:
+      telefono:
+        type: "string"
+      tipo:
+        type: "string"
+      duracion:
+        type: "string"
+      fecha:
+        type: "string"
+  ErrorType:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      severityLevel:
+        type: "integer"
+        format: "int32"
+      description:
+        type: "string"
+  DetailFailType:
+    type: "object"
+    properties:
+      errors:
+        type: "array"
+        items:
+          $ref: "#/definitions/ErrorType"
+  RespuestaNoExitosa:
+    type: "object"
+    properties:
+      detailFail:
+        $ref: "#/definitions/DetailFailType"
+parameters:
+  Telefono:
+    in: "header"
+    name: "telefono"
+    description: "Numero a consultar"
+    type: "string"
+    required: true

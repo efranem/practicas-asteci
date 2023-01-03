@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://fake.com/empresa/dominio/ConsultaRecibosService" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:tns="http://fake.com/empresa/dominio/ConsultaRecibosService">
+
+
+  <xs:simpleType name="NumeroTelefonicoType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="10"/>
+      <xs:maxLength value="10"/>
+      <xs:pattern value="[0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ListaLlamadasType">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="llamada" type="tns:LlamadaType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LlamadaType">
+    <xs:sequence>
+      <xs:element name="telefono" type="tns:NumeroTelefonicoType"/>
+      <xs:element name="tipo" type="xs:string"/>
+      <xs:element name="duracion" type="xs:string"/>
+      <xs:element name="fecha" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="Consultar">
+    <xs:sequence>
+      <xs:element name="consultar" type="tns:ConsultarPetType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ConsultarResponse">
+    <xs:sequence>
+      <xs:element name="consultarResponse" type="tns:ConsultarRespType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ConsultaRecibosServiceException">
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ConsultarPetType">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="telefono" type="tns:NumeroTelefonicoType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ConsultarRespType">
+    <xs:sequence>
+      <xs:element maxOccurs="1" minOccurs="1" name="llamadas" type="tns:ListaLlamadasType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element ibmSchExtn:docRoot="true" name="consultar" type="tns:Consultar"/>
+  <xs:element ibmSchExtn:docRoot="true" name="consultarResponse" type="tns:ConsultarResponse"/>
+  <xs:element ibmSchExtn:docRoot="true" name="consultarException" type="tns:ConsultaRecibosServiceException"/>
+  <xs:element name="consultarPeticion" type="tns:ConsultarPetType"/>
+
+</xs:schema>
